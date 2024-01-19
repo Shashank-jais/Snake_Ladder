@@ -1,36 +1,68 @@
-let ply1 = [{
-    x: 10, y: 1
-}];
+let ply1 = [{ x: 10, y: 1 }];
 let inputDir1 = { x: 10, y: 0 };
 
-
-
-
-let ply2 = [{
-    x: 10, y: 1
-}];
+let ply2 = [{ x: 10, y: 1 }];
 let inputDir2 = { x: 10, y: 0 };
 
-
-
-
-
-
-
-
-
-
-
-function alertfunv() {
-    alert('you won');
+function ladder(x, y) {
+    if (x == 10 && y == 3) {
+        x = 9;
+        y = 1;
+    } else if (x == 10 && y == 6) {
+        x = 9;
+        y = 7;
+    } else if (x == 9 && y == 4) {
+        x = 3;
+        y = 7;
+    }
+    else if (x == 9 && y == 6) {
+        x = 7;
+        y = 7;
+    }
+    else if (x == 9 && y == 10) {
+        x = 8;
+        y = 8;
+    }
+    else if (x == 8 && y == 2) {
+        x = 7;
+        y = 4;
+    } else if (x == 7 && y == 3) {
+        x = 5;
+        y = 2;
+    } else if (x == 6 && y == 9) {
+        x = 4;
+        y = 7;
+    } else if (x == 5 && y == 4) {
+        x = 3;
+        y = 5;
+    } else if (x == 4 && y == 1) {
+        x = 3;
+        y = 3;
+    } else if (x == 3 && y == 8) {
+        x = 2;
+        y = 6;
+    } else if (x == 2 && y == 1) {
+        x = 1;
+        y = 3;
+    }
+    else if (x == 2 && y == 8) {
+        x = 1;
+        y = 10;
+    }
+    return [x, y];
 }
 
+function alertfunv2() {
+    alert('you won');
+    document.querySelectorAll(".board2 .head2").forEach((el) => el.remove());
 
+}
+function alertfunv1() {
+    alert('you won');
+    document.querySelectorAll(".board1 .head").forEach((el) => el.remove());
 
+}
 
-
-
- 
 function rollTheDice1() {
     var randomNumber1 = Math.floor(Math.random() * 6) + 1;
 
@@ -38,7 +70,7 @@ function rollTheDice1() {
     if (inputDir1.x >= 1 && inputDir1.y <= 10) {
         if (inputDir1.x == 1 && inputDir1.y + randomNumber1 >= 10) {
             if (inputDir1.y + randomNumber1 == 11) {
-                alertfunv();
+                alertfunv1();
             } else {
                 return;
             }
@@ -49,6 +81,9 @@ function rollTheDice1() {
         } else {
             inputDir1.y += randomNumber1;
         }
+
+        // Update player position using the returned values from ladder function
+        [inputDir1.x, inputDir1.y] = ladder(inputDir1.x, inputDir1.y);
 
         for (let i = ply1.length - 2; i >= 0; i--) {
             ply1[i + 1] = { ...ply1[i] };
@@ -69,7 +104,7 @@ function rollTheDice2() {
     if (inputDir2.x >= 1 && inputDir2.y <= 10) {
         if (inputDir2.x == 1 && inputDir2.y + randomNumber2 >= 10) {
             if (inputDir2.y + randomNumber2 == 11) {
-                alertfunv();
+                alertfunv2();
             } else {
                 return;
             }
@@ -80,6 +115,9 @@ function rollTheDice2() {
         } else {
             inputDir2.y += randomNumber2;
         }
+
+        // Update player position using the returned values from ladder function
+        [inputDir2.x, inputDir2.y] = ladder(inputDir2.x, inputDir2.y);
 
         for (let i = ply2.length - 2; i >= 0; i--) {
             ply2[i + 1] = { ...ply2[i] };
@@ -93,28 +131,37 @@ function rollTheDice2() {
     }
 }
 
-let board1 = document.querySelector(".board1");
-board1.innerHTML = "";
 function updateBoard1(player, className) {
+    let board1 = document.querySelector(".board1");
+    // Remove the previous head
+    document.querySelectorAll(".board1 .head").forEach((el) => el.remove());
+
+    // Add the new head
     player.forEach((e, index) => {
-        diceElement = document.createElement('div')
+        diceElement = document.createElement('div');
         diceElement.style.gridRowStart = e.x;
         diceElement.style.gridColumnStart = e.y;
         diceElement.classList.add(className);
+        diceElement.classList.add('head');
+        diceElement.style.transition = 'all 0.5s ease';
 
         board1.appendChild(diceElement);
     });
 }
 
-let board2 = document.querySelector(".board2");
-board2.innerHTML = "";
 function updateBoard2(player, className) {
+    let board2 = document.querySelector(".board2");
+    // Remove the previous head
+    document.querySelectorAll(".board2 .head2").forEach((el) => el.remove());
 
+    // Add the new head
     player.forEach((e, index) => {
-        diceElement = document.createElement('div')
+        diceElement = document.createElement('div');
         diceElement.style.gridRowStart = e.x;
         diceElement.style.gridColumnStart = e.y;
         diceElement.classList.add(className);
+        diceElement.classList.add('head2');
+        diceElement.style.transition = 'all 0.5s ease';
 
         board2.appendChild(diceElement);
     });
