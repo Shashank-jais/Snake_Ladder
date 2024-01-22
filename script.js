@@ -1,10 +1,13 @@
+let rollingSound = new Audio('rpg-dice-rolling-95182.mp3')
+let winSound = new Audio('winharpsichord-39642.mp3')
+
 let ply1 = [{ x: 10, y: 1 }];
 let inputDir1 = { x: 10, y: 0 };
 
 let ply2 = [{ x: 10, y: 1 }];
 let inputDir2 = { x: 10, y: 0 };
 
-function ladder(x, y) {
+function condition(x, y) {
     if (x == 10 && y == 3) {
         x = 9;
         y = 1;
@@ -49,27 +52,159 @@ function ladder(x, y) {
         x = 1;
         y = 10;
     }
+    else if (x == 10 && y == 8) {
+        x = 10;
+        y = 4;
+    }
+    else if (x == 9 && y == 3) {
+        x = 10;
+        y = 1;
+    }
+    else if (x == 8 && y == 6) {
+        x = 10;
+        y = 10;
+    }
+    else if (x == 7 && y == 2) {
+        x = 10;
+        y = 5;
+    }
+    else if (x == 5 && y == 1) {
+        x = 8;
+        y = 3;
+    }
+    else if (x == 5 && y == 5) {
+        x = 10;
+        y = 1;
+    }
+    else if (x == 5 && y == 7) {
+        x = 7;
+        y = 5;
+    }
+    else if (x == 5 && y == 10) {
+        x = 10;
+        y = 6;
+    }
+    else if (x == 3 && y == 6) {
+        x = 8;
+        y = 8;
+    }
+    else if (x == 2 && y == 3) {
+        x = 6;
+        y = 5;
+    }
+    else if (x == 2 && y == 5) {
+        x = 5;
+        y = 2;
+    }
+    else if (x == 2 && y == 10) {
+        x = 6;
+        y = 8;
+    }
+    else if (x == 1 && y == 2) {
+        x = 4;
+        y = 3;
+    }
+    else if (x == 1 && y == 4) {
+        x = 2;
+        y = 7;
+    }
+    else if (x == 1 && y == 9) {
+        x = 8;
+        y = 5;
+    }
     return [x, y];
 }
 
+
+function snake(x, y) {
+    if (x == 10 && y == 8) {
+        x = 10;
+        y = 4;
+    }
+    else if (x == 9 && y == 3) {
+        x = 10;
+        y = 1;
+    }
+    else if (x == 8 && y == 6) {
+        x = 10;
+        y = 10;
+    }
+    else if (x == 7 && y == 2) {
+        x = 10;
+        y = 5;
+    }
+    else if (x == 5 && y == 1) {
+        x = 8;
+        y = 3;
+    }
+    else if (x == 5 && y == 5) {
+        x = 10;
+        y = 1;
+    } else if (x == 5 && y == 7) {
+        x = 7;
+        y = 5;
+    } else if (x == 5 && y == 10) {
+        x = 10;
+        y = 6;
+    } else if (x == 3 && y == 6) {
+        x = 8;
+        y = 8;
+    } else if (x == 2 && y == 3) {
+        x = 6;
+        y = 5;
+    } else if (x == 2 && y == 5) {
+        x = 5;
+        y = 2;
+    } else if (x == 2 && y == 10) {
+        x = 6;
+        y = 8;
+    }
+    else if (x == 1 && y == 2) {
+        x = 4;
+        y = 3;
+    }
+    else if (x == 1 && y == 4) {
+        x = 2;
+        y = 7;
+    }
+    else if (x == 1 && y == 9) {
+        x = 8;
+        y = 5;
+    }
+    return [x, y];
+}
+
+
+
+
+
+
+
+
+
+
 function alertfunv2() {
-    alert('you won');
+    alert('Player2 won');
+    
     document.querySelectorAll(".board2 .head2").forEach((el) => el.remove());
 
 }
 function alertfunv1() {
-    alert('you won');
+    alert('Player1 won');
+    
     document.querySelectorAll(".board1 .head").forEach((el) => el.remove());
 
 }
 
 function rollTheDice1() {
+    rollingSound.play()
     var randomNumber1 = Math.floor(Math.random() * 6) + 1;
 
     document.querySelector(".img1").setAttribute("src", "dice" + randomNumber1 + ".png");
     if (inputDir1.x >= 1 && inputDir1.y <= 10) {
         if (inputDir1.x == 1 && inputDir1.y + randomNumber1 >= 10) {
             if (inputDir1.y + randomNumber1 == 11) {
+                winSound.play();
                 alertfunv1();
             } else {
                 return;
@@ -83,7 +218,7 @@ function rollTheDice1() {
         }
 
         // Update player position using the returned values from ladder function
-        [inputDir1.x, inputDir1.y] = ladder(inputDir1.x, inputDir1.y);
+        [inputDir1.x, inputDir1.y] = condition(inputDir1.x, inputDir1.y);
 
         for (let i = ply1.length - 2; i >= 0; i--) {
             ply1[i + 1] = { ...ply1[i] };
@@ -98,12 +233,14 @@ function rollTheDice1() {
 }
 
 function rollTheDice2() {
+    rollingSound.play()
     var randomNumber2 = Math.floor(Math.random() * 6) + 1;
 
     document.querySelector(".img2").setAttribute("src", "dice" + randomNumber2 + ".png");
     if (inputDir2.x >= 1 && inputDir2.y <= 10) {
         if (inputDir2.x == 1 && inputDir2.y + randomNumber2 >= 10) {
             if (inputDir2.y + randomNumber2 == 11) {
+                winSound.play();
                 alertfunv2();
             } else {
                 return;
@@ -117,7 +254,7 @@ function rollTheDice2() {
         }
 
         // Update player position using the returned values from ladder function
-        [inputDir2.x, inputDir2.y] = ladder(inputDir2.x, inputDir2.y);
+        [inputDir2.x, inputDir2.y] = condition(inputDir2.x, inputDir2.y);
 
         for (let i = ply2.length - 2; i >= 0; i--) {
             ply2[i + 1] = { ...ply2[i] };
